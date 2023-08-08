@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
-// BOOTSTRAP 5
 import { InputGroup, Form } from "react-bootstrap";
-
-// Components
 import FooterComponent from "../Components/FooterComponent";
+import NotfoundComponent from "../Components/NotFoundComponents";
 
 const PreviewJadwalSholat = () => {
   const { idkota } = useParams();
+  const URL = import.meta.env.VITE_JADWAL_SHOLAT_URL;
 
-  const formatDate = (date) => {
-    return date < 10 ? `0${date}` : date;
-  };
+  const formatDate = (date) => (date < 10 ? `0${date}` : date);
 
-  // State
   const [jadwalharian, setJadwalHarian] = useState([]);
   const [searchjadwal, setSearchJadwal] = useState([]);
   const [searchjadwalhidden, setSearchJadwalHidden] = useState([]);
@@ -23,22 +18,14 @@ const PreviewJadwalSholat = () => {
   const [lokasi, setLokasi] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState("");
-  const [showCard, setShowCard] = useState(false); // Tambah state untuk menampilkan card
+  const [showCard, setShowCard] = useState(false);
   const [handlenotfound, setHandleNotFound] = useState({});
-
-  // console.log(selectedDate)
+  const [handlegagalfetch, setHandleGagalFetch] = useState(false);
 
   const handleChange = (event) => {
-    // Dapatkan value dari input tanggal
     const inputDateValue = event.target.value;
-
-    // Memisahkan tahun, bulan, dan tanggal
     const [year, month, day] = inputDateValue.split("-");
-
-    // Menggabungkan kembali dengan format "dd/mm/yyyy"
     const formattedDate = `${year}/${month}/${day}`;
-
-    // Simpan ke dalam state
     setSelectedDate(formattedDate);
     setLoadingSearchJadwal(true);
     setShowCard(false);
@@ -52,14 +39,14 @@ const PreviewJadwalSholat = () => {
     return `${year}/${month}/${day}`;
   };
 
-  const tanggal = getCurrentDate();
 
-  const URL = import.meta.env.VITE_JADWAL_SHOLAT_URL;
+
+  // FUNGSI TAMPIL JADWAL HARI INI 
+  const tanggal = getCurrentDate();
 
   const getJadwal = async () => {
     try {
       const response = await axios.get(`${URL}/jadwal/${idkota}/${tanggal}`);
-      //console.log(response.data.data);
       setLokasi(response.data.data);
       setJadwalHarian(response.data.data.jadwal);
       setLoading(false);
@@ -69,36 +56,37 @@ const PreviewJadwalSholat = () => {
     }
   };
 
+    // FUNGSI CARI JADWAL
+
   const getSearchJadwal = async () => {
     try {
-      const response = await axios.get(`${URL}/jadwal/${idkota}/${selectedDate}`);
-      // console.log(response.data.data.jadwal.filter((f) => f.tanggal.includes("01")));
-      // console.log(response.data);
+      const response = await axios.get(`${URL}/jadwal/${idkota}/${selectedDate}`);      
       setHandleNotFound(response.data);
       setSearchJadwal(response.data.data.jadwal);
       setSearchJadwalHidden(response.data);
       setLoadingSearchJadwal(false);
-      // Tampilkan card setelah delay selama 1 detik
+      setHandleGagalFetch(false)
+
       setTimeout(() => {
         setShowCard(true);
       });
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      setHandleGagalFetch(true)
     }
   };
 
-  useEffect(() => {
-    document.title = `${lokasi.lokasi}`;
-  }, [lokasi]);
-
-  useEffect(() => {
-    getSearchJadwal();
-    setLoadingSearchJadwal(false);
-  }, [selectedDate]);
-
+  document.title = `${lokasi.lokasi}`;
   useEffect(() => {
     getJadwal();
   }, [idkota]);
+
+  useEffect(() => {
+    setLoadingSearchJadwal(false);
+    if (selectedDate) {
+      getSearchJadwal();
+    }
+  }, [selectedDate]);
 
   if (loading) {
     return (
@@ -189,9 +177,17 @@ const PreviewJadwalSholat = () => {
                 </div>
               </section>
 
-              {/* Alert Not Found */}
+              
 
-              <section className={handlenotfound.status !== false ? 'd-none': ""}>
+              <section className={handlegagalfetch && handlenotfound.message === 'Tidak ketemu' ? '' : 'd-none'}>
+                <NotfoundComponent/>
+              </section>
+
+              {/* Alert Not Found */}
+              {/* {console.log(handlenotfound)}
+              {console.log(handlegagalfetch)} */}
+
+              <section className={!handlenotfound.status && handlenotfound.message === 'Data tidak ketemu' && selectedDate ? '': "d-none"}>
                 <div className="alert alert-info alert-dismissible fade show text-center" role="alert">
                   <strong>Mohon maaf,</strong> data tidak ditemukan atau tidak terdapat di data base. pastikan kamu sudah memilih tanggal atau kamu bisa cari tanggal lain ❤
                 </div>
