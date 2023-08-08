@@ -1,0 +1,20 @@
+:root {
+    --bs-color-bg-primary :  #bae6fd;
+    --bs-color-bg-secondary : #e0f2fe;
+}
+
+
+.list-surah-section {
+    background-color: var(--bs-color-bg-secondary);
+}
+
+/* CSS untuk bentuk bulan */
+.moon-badge {
+    background-color: #f0f0f0; /* Warna latar belakang badge */
+    color: #000; /* Warna teks */
+    width: 1.2rem; /* Ukuran lebar badge */
+    height: 0.6rem; /* Ukuran tinggi badge */
+    border-radius: 50% / 100%; /* Membuat border-radius setengah dari lebar badge untuk mendapatkan bentuk bulan */
+    display: inline-block;
+  }
+  
