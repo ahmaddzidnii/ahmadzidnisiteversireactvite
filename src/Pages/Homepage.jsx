@@ -34,9 +34,9 @@ const Homepage = () => {
                 <a className="btn btn-info ms-1" href="https://www.youtube.com/@madzchannel3399">
                 <i className="bi bi-youtube"></i> Youtube
                 </a>
-                <Link className="btn btn-info ms-1" to="/galery-project">
-                  Gallery
-                </Link>
+                <a target="_blank" href="https://alquran.ahmadzidni.site" className="btn btn-info ms-1" >
+                  Lihat Aplikasi Versi Lama
+                </a>
               </Col>
               <Col md={6}>
                 <img src={imgHallo} alt="IMG_HALLO" />
