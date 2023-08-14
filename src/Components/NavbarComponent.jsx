@@ -30,7 +30,7 @@ const NavbarComponent = () => {
     <div>
       <Navbar
         collapseOnSelect
-        expand="md"
+        expand="lg"
         className={changeColor ? 'color-active' : ''}
         expanded={isMenuOpen}
       >
@@ -80,6 +80,16 @@ const NavbarComponent = () => {
                   }
                 >
                   Jadwal Sholat
+                </NavLink>
+              </div>
+              <div className="nav-link">
+                <NavLink
+                  to={'/Asmaulhusna'}
+                  className={({ isActive, isPending }) =>
+                    isPending ? 'pending' : isActive ? 'active' : ''
+                  }
+                >
+                  Asmaul Husna
                 </NavLink>
               </div>
             </Nav>

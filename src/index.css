@@ -200,6 +200,9 @@ background-color:#020617!important;
 .space-navbar {
   padding-top: 6rem ;
 }
+.space-footer {
+  padding-top: 6rem ;
+}
 
 
 /* Homepage */
@@ -325,4 +328,17 @@ background-color: rgba(112, 128, 144, 0.073);
   }
 }
 
+
+
+/* asmaul husna list */
+
+/* .nomor{
+  position:absolute;
+  top :0;
+}
+
+.wrapper{
+position: relative;
+
+} */
 

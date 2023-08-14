@@ -31,12 +31,19 @@ const Homepage = () => {
                   <span>ahmadzidni.site</span>
                 </h1>
                 <p>Menjelajahi Dunia Digital</p>
-                <a className="btn btn-info ms-1" href="https://www.youtube.com/@madzchannel3399">
+                <div className="row">
+                <div className="col-md-6 mb-2">
+                <a className="btn btn-info w-100" href="https://www.youtube.com/@madzchannel3399">
                 <i className="bi bi-youtube"></i> Youtube
                 </a>
-                <a target="_blank" href="https://alquran.ahmadzidni.site" className="btn btn-info ms-1" >
-                  Lihat Aplikasi Versi Lama
+                </div>
+                <div className="col-md-6">
+                <a target="_blank" href="https://alquran.ahmadzidni.site" className="btn btn-info w-100" >
+                Versi Lama <i className="bi bi-arrow-right-circle-fill"></i>
                 </a>
+                </div>
+
+                </div>
               </Col>
               <Col md={6}>
                 <img src={imgHallo} alt="IMG_HALLO" />
