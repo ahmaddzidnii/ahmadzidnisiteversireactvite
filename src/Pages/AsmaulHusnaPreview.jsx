@@ -12,7 +12,7 @@ const AsmaulHusnaPreview = () => {
 
   const fetchAsmaulHusna = async () => {
     try {
-      const response = await axios.get(`https://api.ahmadzidni.site/api/asmaulhusna/${id}`);
+      const response = await axios.get(`https://api.ahmadzidni.site/api/asmaulhusna/${id}?ApiKey=ahmadd`);
       SetAsmauHusna(response.data.datas[0]);
       SetPagination(response.data.paginationInfo);
       SetLoading(false);

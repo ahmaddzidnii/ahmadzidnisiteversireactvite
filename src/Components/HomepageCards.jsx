@@ -86,7 +86,7 @@ const HomepageCards = () => {
                 <Card.Body className="text-center">
                   <Card.Title>Asmaul Husna</Card.Title>
                   <Card.Text>Cari jadwal sholat di kota anda</Card.Text>
-                  <Link className="btn btn-info d-block" to="/al-quran">
+                  <Link className="btn btn-info d-block" to="/Asmaulhusna">
                   Pilih Menu
                 </Link>
                 </Card.Body>

@@ -12,7 +12,7 @@ const AsmaulHusna = () => {
   // console.log(value);
 
   const getAllAsmaulHusna = async () => {
-    const response = await axios.get("https://api.ahmadzidni.site/api/asmaulhusna");
+    const response = await axios.get("https://api.ahmadzidni.site/api/asmaulhusna?ApiKey=ahmadd");
     try {
       setDatas(response.data.datas);
       setLoading(false)
