@@ -10,6 +10,7 @@ import DoaImage from "../assets/img/doa.jpg"
 import AsmaulHusnaImage from "../assets/img/asmaul-husna.jpg"
 import { useEffect } from "react";
 import FooterComponent from "../Components/FooterComponent";
+import Kontak from "../Components/Kontak";
 
 const Homepage = () => {
 
@@ -121,6 +122,10 @@ const Homepage = () => {
             <HomepageAccordions/>
           </Row>
         </Container>
+      </div>
+
+      <div>
+        <Kontak/>
       </div>
 
       <div>
