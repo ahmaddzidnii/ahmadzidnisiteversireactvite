@@ -1,19 +1,26 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Form, FloatingLabel, Button, Spinner } from 'react-bootstrap';
+import { Form, Button, Spinner, Toast, ToastContainer } from 'react-bootstrap';
 import Swal from 'sweetalert2'
+import ListKomentar from './ListKomentar';
 
 const Kontak = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const form = {
     nama: '',
     email: '',
     pesan: ''
-  });
+  }
+
+  const [formData, setFormData] = useState(form);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const PostData = async () => {
-    const response = await axios.post('https://api.ahmadzidni.site/api/kontak?ApiKey=ahmadd', formData);
+
+    await axios.post('https://api.ahmadzidni.site/api/kontak?ApiKey=ahmadd', formData);
     setIsLoading(false);
+
   }
 
   const handleChange = (event) => {
@@ -27,16 +34,19 @@ const Kontak = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-
     try {
-      // Simulasi pengiriman data ke server
       await PostData();
+      setFormData(form)
+      setSubmitSuccess(true);
+      setTimeout(() => {
+        setSubmitSuccess(false); // Set submitSuccess kembali menjadi false setelah beberapa waktu
+      }, 2000);
 
       // Menampilkan SweetAlert setelah pengiriman selesai
       Swal.fire({
         icon: 'success',
         title: 'Berhasil Mengirim Pesan',
-        text: 'Terimakasih pesannya',
+        text: 'Terimakasih komentarnya',
       });
     } catch (error) {
       console.error(error);
@@ -66,7 +76,7 @@ const Kontak = () => {
     <div className="bg-sky-50">
       <div className="container">
         <div className="row">
-          <h1 className="my-5 text-center fw-bold">Hubungi Kami</h1>
+          <h1 className="my-5 text-center fw-bold">Berikan Komentar</h1>
         </div>
         <div className="row">
           <Form onSubmit={handleSubmit}>
@@ -85,10 +95,13 @@ const Kontak = () => {
               <Form.Control type="text" as="textarea" name="pesan" value={formData.pesan} onChange={handleChange} required placeholder="Pesan" />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-              {isLoading ? <Spinner animation="border" size="sm" /> : "Submit"}
+            <Button type="submit" className="btn btn-info w-100 mb-5">
+              {isLoading ? <Spinner animation="border" size="sm" /> : "Kirim Pesan"}
             </Button>
           </Form>
+        </div>
+        <div className="row">
+          <ListKomentar submitSuccess={submitSuccess}/>
         </div>
       </div>
     </div>
