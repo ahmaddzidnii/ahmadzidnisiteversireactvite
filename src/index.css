@@ -12,6 +12,9 @@
   --button-color-text: #eff6ff; 
 }
 
+body{
+  overflow-x: hidden;
+}
 
 .bg-sky-50 {
 background-color: #eff6ff!important;
@@ -346,6 +349,7 @@ position: relative;
 /* Style Komentar */
 
 .img-profile{
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
 }
+

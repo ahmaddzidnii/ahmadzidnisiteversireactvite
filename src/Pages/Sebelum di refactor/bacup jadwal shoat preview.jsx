@@ -229,6 +229,42 @@ const PreviewJadwalSholat = () => {
       </>
     );
   }
+  return (
+    <div>
+      <div>
+        <div className="container">
+          <h1 className="mb-4">{count} Komentar</h1>
+          <div className="row">
+            {data.map((d) => {
+              const formatedDate = `${new Date(d.Tanggal).getDate()}-${new Date(d.Tanggal).getMonth()+1}-${new Date(d.Tanggal).getFullYear()} ${new Date(d.Tanggal).getHours()}:${new Date(d.Tanggal).getMinutes()}`;
+              console.log(formatedDate)
+              return (
+                <div className="col-md-12 mb-3" key={d.id}>
+                  <div className="card">
+                    <div className="card-header">
+                      <div>
+                        <div className="d-flex align-items-center">
+                          <div className="col-md-1">
+                          <img className="img-fluid rounded-circle img-profile" src={avatar} alt="profil" />
+                          </div>
+                          <div className="col-md-11">
+                            <strong>{d.nama}</strong>
+                            <h6 className="mt-2">{d.email}</h6>
+                            <h6 className="mt-2">{formatedDate}</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card-body">{d.pesan}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default PreviewJadwalSholat;

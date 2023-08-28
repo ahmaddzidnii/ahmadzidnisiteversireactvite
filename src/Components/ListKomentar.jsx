@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
+import avatar from "../assets/img/avatar.png";
 
 const ListKomentar = (props) => {
   // console.log(props)
@@ -11,7 +12,7 @@ const ListKomentar = (props) => {
 
   const getKomentar = async () => {
     try {
-      const response = await axios.get("https://api.ahmadzidni.site/api/kontak?ApiKey=ahmadd");
+      const response = await axios.get("http://localhost:3000/api/kontak?ApiKey=ahmadd");
       // console.log(response.data);
       setCount(response.data.totalCount);
       setData(response.data.data);
@@ -32,27 +33,52 @@ const ListKomentar = (props) => {
 
   return (
     <div>
-      <h1 className="mb-4">{count} Komentar</h1>
       <div>
-        {data.map((d) => {
-          return (
-            <div className="card mb-3" key={d.id}>
-              <ul className="list-group">
-                <div className="list-group-item p-2 pe-3">
-                  <div className="toast-header">
-                    <img src="https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg" className="rounded me-2 img-profile" alt="profile" />
-                    <div>
-                      <strong className="me-auto">{d.nama}</strong>
-                      <span className="d-block">{d.email}</span>
+        <div className="container">
+          <h1 className="mb-4">{count} Komentar</h1>
+          <div className="row">
+            {data.map((d) => {
+              const hari = new Date(d.Tanggal).getDate();
+              const bulan = new Date(d.Tanggal).getMonth()+1
+
+              const formatTanggal = (h,b) => {
+                if(h < 10){
+                  h = `0${h}`
+                }
+
+                if(b < 10){
+                  b = `0${b}`
+                }
+
+                return `${h}-${b}`
+              }
+
+              const formatedDate = `${formatTanggal(hari,bulan)}-${new Date(d.Tanggal).getFullYear()} ${new Date(d.Tanggal).getHours()}:${new Date(d.Tanggal).getMinutes()}`;
+              return (
+                <div className="col-md-12 mb-3" key={d.id}>
+                  <div className="card">
+                    <div className="card-header">
+                      <div>
+                        <div className="d-flex align-items-center">
+                          <div className="col-md-1">
+                          <img className="img-fluid rounded-circle img-profile" src={avatar} alt="profil" />
+                          </div>
+                          <div className="col-md-11">
+                            <strong>{d.nama}</strong>
+                            <h6 className="mt-2">{d.email}</h6>
+                            <h6 className="mt-2">{formatedDate}</h6>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <small className="text-body-secondary ms-auto">{d.TimeStamp}</small>
+                    <div className="card-body">
+                      <p className="p-2" align="justify">{d.pesan}</p></div>
                   </div>
                 </div>
-                <li className="list-group-item">{d.pesan}</li>
-              </ul>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

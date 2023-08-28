@@ -18,7 +18,7 @@ const Kontak = () => {
 
   const PostData = async () => {
 
-    await axios.post('https://api.ahmadzidni.site/api/kontak?ApiKey=ahmadd', formData);
+    await axios.post('http://localhost:3000/api/kontak?ApiKey=ahmadd', formData);
     setIsLoading(false);
 
   }
