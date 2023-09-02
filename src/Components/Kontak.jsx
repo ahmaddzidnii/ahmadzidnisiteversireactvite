@@ -18,7 +18,7 @@ const Kontak = () => {
 
   const PostData = async () => {
 
-    await axios.post('http://localhost:3000/api/kontak?ApiKey=ahmadd', formData);
+    await axios.post(import.meta.env.VITE_PROD_KONTAK_URL, formData);
     setIsLoading(false);
 
   }
@@ -73,7 +73,7 @@ const Kontak = () => {
   };
 
   return (
-    <div className="bg-sky-50">
+    <div className="bg-sky-100">
       <div className="container">
         <div className="row">
           <h1 className="my-5 text-center fw-bold">Berikan Komentar</h1>

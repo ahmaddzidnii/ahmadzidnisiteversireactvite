@@ -113,7 +113,7 @@ const Homepage = () => {
           </Row>
         </Container>
       </div>
-      <div className="accordion-section min-vh-100 w-100 bg-sky-100">
+      {/* <div className="accordion-section min-vh-100 w-100 bg-sky-100">
         <Container>
           <Row className="p-5 text-center">
             <h1 className="responsive-text fw-bold">Pertanyaan seputar ahmadzidni.site</h1>
@@ -122,7 +122,7 @@ const Homepage = () => {
             <HomepageAccordions/>
           </Row>
         </Container>
-      </div>
+      </div> */}
 
       <div>
         <Kontak/>

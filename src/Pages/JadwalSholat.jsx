@@ -45,7 +45,7 @@ const JadwalSholat = () => {
                 <InputGroup className="form-control p-0">
                   <Form.Control id="form" className="search mb-0 p-3 border-1 border-black" placeholder="🔎  cari kota " onChange={(e) => setSearch(e.target.value)} />
                   <InputGroup.Text className="d-none d-lg-flex border-black" id="basic-addon2">
-                    CTRL + M
+                  <span> <kbd className="kbd-keys">CTRL</kbd> + <kbd className="kbd-keys">M</kbd> </span>
                   </InputGroup.Text>
                 </InputGroup>
               </div>

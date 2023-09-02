@@ -41,7 +41,7 @@ const AsmaulHusna = () => {
                   }}
                 />
                 <InputGroup.Text className="d-none d-lg-flex border-black" id="basic-addon2">
-                  CTRL + M
+                <span> <kbd className="kbd-keys">CTRL</kbd> + <kbd className="kbd-keys">M</kbd> </span>
                 </InputGroup.Text>
               </InputGroup>
             </div>

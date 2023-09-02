@@ -35,7 +35,7 @@ const NavbarComponent = () => {
         expanded={isMenuOpen}
       >
         <Container>
-          <Navbar.Brand className="fw-bold fs-4">ahmadzidni.site</Navbar.Brand>
+          <Navbar.Brand href="/" className="fw-bold fs-4">ahmadzidni.site</Navbar.Brand>
           <Navbar.Toggle
             aria-controls="responsive-navbar-nav"
             onClick={handleMenuToggle}

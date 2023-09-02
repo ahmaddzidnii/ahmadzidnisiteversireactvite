@@ -112,7 +112,7 @@ const PreviewAlquran = () => {
                 <InputGroup className="form-control p-0">
                   <Form.Control onChange={(e) => setSearch(e.target.value)} id="form" className="search mb-0 p-3 border-1 border-black" placeholder="🔎  cari urutan ayat atau penggalan arti..." />
                   <InputGroup.Text className="d-none d-lg-flex border-black bg-sky-100" id="basic-addon2">
-                    CTRL + M
+                  <span> <kbd className="kbd-keys">CTRL</kbd> + <kbd className="kbd-keys">M</kbd> </span>
                   </InputGroup.Text>
                 </InputGroup>
               </div>
