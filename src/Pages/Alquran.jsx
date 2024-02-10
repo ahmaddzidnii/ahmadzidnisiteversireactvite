@@ -1,9 +1,12 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
+import { Link } from "react-router-dom";
+import { useRef } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 // BOOTSTRAP 5
-import {Form,InputGroup }from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 
 // AXIOS
 import axios from "axios";
@@ -12,118 +15,122 @@ import axios from "axios";
 import FooterComponent from "../Components/FooterComponent";
 
 // CSS
-import './alquran.css'
+import "./alquran.css";
+import { useDocumentTitle } from "../hooks/use-document-title";
+import { Loader } from "../Components/loader";
+import InternalServerErrorComponent from "../Components/internal-server-error";
 
 const Alquran = () => {
-
-  // state filter json response
   const [input, setInput] = useState("");
+  const [data] = useDebounce(input, 500);
 
-  //  State Menammpilkan Surat
-  const [surats, setSurats] = useState([]);
+  const URL = import.meta.env.VITE_BASE_URL;
 
-  // State loading
-  const [loading, setLoading] = useState(true);
-
-  const URL = import.meta.env.VITE_BASE_URL
-
-  // Fetching Data Pertama Render Menggunakan axios
-  const firstRender = async () => {
-    const results = await axios.get(URL);
-    setLoading(false);
-    setSurats(results.data.data);
-  };
-
-  
-  // Fetching data filter Json mengguakan fetch biasa
-  const getSurats = (value) => {
-    
-    fetch(URL)
-      .then((response) => response.json())
-      .then((data) => {
-        const json = data.data;
-        const filter = json.filter((user) => {
-          return  user.namaLatin && user.namaLatin.toLowerCase().includes(value.toLowerCase()) || user.nomor.toString().includes(value);
-        });
-        
-        setSurats(filter);
-      });
-  };
-
-
-
-  const handleChange = (value) => {
-    setInput(value);
-    getSurats(value);
-  };
+  const {
+    data: surat,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["list-surat"],
+    queryFn: async () => {
+      const response = await axios.get(URL);
+      return response.data.data;
+    },
+  });
 
   // Title Halaman
-  document.title = 'List Surah - ahmadzidni.site';
-
-  useEffect(() => {
-    firstRender();
-  }, []);
+  useDocumentTitle("List Surah - ahmadzidni.site");
 
   // Shortcut
-  document.addEventListener('keydown', e => {
-
-    if(e.key.toLowerCase() === 'm' && e.ctrlKey === true){
-      document.getElementById('form').focus()
+  const inputRef = useRef(null);
+  useHotkeys(
+    "ctrl+k",
+    () => {
+      inputRef.current?.focus();
+    },
+    {
+      preventDefault: true,
     }
-
-  })
+  );
   // End Shorcut
 
+  if (isError) return <InternalServerErrorComponent />;
 
-// Handle Loading
-  if (loading)
-    return (
-      <section className="min-vh-100 d-flex align-items-center justify-content-center">
-        <div className="lds-facebook ">
-          <div></div>
-          <div></div>
-          <div></div>
+  if (isLoading) return <Loader />;
+
+  return (
+    <div className="list-surah-section bg-sky-50">
+      <div className="container space-navbar">
+        <div className="row mb-2">
+          <form className="subnav-search d-flex flex-nowrap">
+            <div className="col">
+              <InputGroup className="form-control p-0">
+                <Form.Control
+                  ref={inputRef}
+                  id="form"
+                  className="search mb-0 p-3 border-1 border-black"
+                  placeholder="🔎  cari surah atau urutan surat... "
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                <InputGroup.Text
+                  className="d-none d-lg-flex border-black"
+                  id="basic-addon2"
+                >
+                  <span>
+                    <kbd className="kbd-keys">CTRL</kbd> +
+                    <kbd className="kbd-keys">K</kbd>
+                  </span>
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+          </form>
         </div>
-      </section>
-    );
-
-    return (
-      <div className="list-surah-section bg-sky-50">
-        <div className="container space-navbar">
-          <div className="row mb-2">
-            <form className="subnav-search d-flex flex-nowrap">
-              <div className="col">
-                <InputGroup  className="form-control p-0">
-                  <Form.Control id="form" className="search mb-0 p-3 border-1 border-black" placeholder="🔎  cari surah atau urutan surat... " value={input} onChange={(e) => handleChange(e.target.value)} />
-                  <InputGroup.Text className="d-none d-lg-flex border-black" id="basic-addon2">
-                   <span> <kbd className="kbd-keys">CTRL</kbd> + <kbd className="kbd-keys">M</kbd> </span>
-                  </InputGroup.Text>
-                </InputGroup>
-              </div>
-            </form>
-          </div>
-          <div className="row">
-            {surats.map( surat => {
+        <div className="row">
+          {surat
+            .filter(
+              (f) =>
+                f.namaLatin.toLowerCase().includes(data.toLowerCase()) ||
+                f.namaLatin
+                  .toLowerCase()
+                  .replace(/[\s-]/g, "")
+                  .includes(data.toLowerCase()) ||
+                f.nomor.toString().includes(data)
+            )
+            .map((surat) => {
               return (
-                <div className="col-md-4" key={surat.nomor}>
-                  <NavLink to={`/Alquran/ayat/${surat.nomor}`} className="card my-3 transisi text-decoration-none">
+                <div
+                  className="col-md-4"
+                  key={surat.nomor}
+                >
+                  <Link
+                    to={`/Alquran/ayat/${surat.nomor}`}
+                    preventScrollReset={false}
+                    className="card my-3 transisi text-decoration-none"
+                  >
                     <div className="card-body">
                       <h3 className="card-title">{surat.namaLatin}</h3>
-                      <span className="badge rounded-pill bg-sky-600 p-2">{surat.jumlahAyat} Ayat</span>
-                      <h1 className="card-subtitle mb-2 text-body-secondary text-end">{surat.nama}</h1>
-                      <p className="card-text text-end">{surat.arti} | {surat.tempatTurun}</p>
+                      <span className="badge rounded-pill bg-sky-600 p-2">
+                        {surat.jumlahAyat} Ayat
+                      </span>
+                      <h1 className="card-subtitle mb-2 text-body-secondary text-end">
+                        {surat.nama}
+                      </h1>
+                      <p className="card-text text-end">
+                        {surat.arti} | {surat.tempatTurun}
+                      </p>
                     </div>
-                  </NavLink>              
+                  </Link>
                 </div>
               );
             })}
-          </div>
-        </div>
-        <div className="pt-5">
-        <FooterComponent/>
         </div>
       </div>
-    );
+      <div className="pt-5">
+        <FooterComponent />
+      </div>
+    </div>
+  );
 };
 
 export default Alquran;

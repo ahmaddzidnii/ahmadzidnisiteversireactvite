@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { InputGroup, Form } from "react-bootstrap";
 
 import FooterComponent from "../Components/FooterComponent";
-import NotfoundComponent from "../Components/NotFoundComponents";
 import { Loader } from "../Components/loader";
+import Notfound from "./404Notfound";
 
 const PreviewJadwalSholat = () => {
   const { idkota } = useParams();
@@ -44,6 +44,7 @@ const PreviewJadwalSholat = () => {
       const response = await axios.get(`${URL}/jadwal/${idkota}/${tanggal}`);
       return response.data.data;
     },
+    retry: false,
   });
 
   // FUNGSI CARI JADWAL
@@ -62,11 +63,10 @@ const PreviewJadwalSholat = () => {
       return response.data;
     },
     enabled: !!selectedDate,
+    retry: false,
   });
 
   const errorCode = error?.response.status;
-
-  console.log({ searchJadwal, errorCode });
 
   const jadwalharian = jadwalToday?.jadwal;
   const lokasi = jadwalToday;
@@ -77,7 +77,7 @@ const PreviewJadwalSholat = () => {
   }
 
   if (isErrorJadwalToday) {
-    return <NotfoundComponent />;
+    return <Notfound />;
   }
 
   return (
@@ -191,7 +191,7 @@ const PreviewJadwalSholat = () => {
 
             {isErrorSearchJadwal && (
               <>
-                {errorCode !== 400 && <NotfoundComponent />}
+                {errorCode !== 400 && <InternalServerErrorComponent />}
 
                 {errorCode === 400 && (
                   <div

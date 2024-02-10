@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 const NavbarComponent = () => {
   const [changeColor, setChangeColor] = useState(false);
@@ -20,9 +20,9 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     changeBackgroundColor();
-    window.addEventListener('scroll', changeBackgroundColor);
+    window.addEventListener("scroll", changeBackgroundColor);
     return () => {
-      window.removeEventListener('scroll', changeBackgroundColor);
+      window.removeEventListener("scroll", changeBackgroundColor);
     };
   }, [isMenuOpen]);
 
@@ -31,11 +31,16 @@ const NavbarComponent = () => {
       <Navbar
         collapseOnSelect
         expand="lg"
-        className={changeColor ? 'color-active' : ''}
+        className={changeColor ? "color-active" : ""}
         expanded={isMenuOpen}
       >
         <Container>
-          <Navbar.Brand href="/" className="fw-bold fs-4">ahmadzidni.site</Navbar.Brand>
+          <Navbar.Brand
+            href="/"
+            className="fw-bold fs-4"
+          >
+            ahmadzidni.site
+          </Navbar.Brand>
           <Navbar.Toggle
             aria-controls="responsive-navbar-nav"
             onClick={handleMenuToggle}
@@ -44,9 +49,9 @@ const NavbarComponent = () => {
             <Nav className="mx-auto text-center">
               <div className="nav-link">
                 <NavLink
-                  to={'/'}
+                  to={"/"}
                   className={({ isActive, isPending }) =>
-                    isPending ? 'pending' : isActive ? 'active' : ''
+                    isPending ? "pending" : isActive ? "active" : ""
                   }
                 >
                   Home
@@ -64,9 +69,9 @@ const NavbarComponent = () => {
               </div> */}
               <div className="nav-link">
                 <NavLink
-                  to={'/Alquran/ayat'}
+                  to={"/Alquran/ayat"}
                   className={({ isActive, isPending }) =>
-                    isPending ? 'pending' : isActive ? 'active' : ''
+                    isPending ? "pending" : isActive ? "active" : ""
                   }
                 >
                   Alquran
@@ -74,9 +79,9 @@ const NavbarComponent = () => {
               </div>
               <div className="nav-link">
                 <NavLink
-                  to={'/Jadwalsholat/listkota'}
+                  to={"/Jadwalsholat/listkota"}
                   className={({ isActive, isPending }) =>
-                    isPending ? 'pending' : isActive ? 'active' : ''
+                    isPending ? "pending" : isActive ? "active" : ""
                   }
                 >
                   Jadwal Sholat
@@ -84,9 +89,9 @@ const NavbarComponent = () => {
               </div>
               <div className="nav-link">
                 <NavLink
-                  to={'/Asmaulhusna'}
+                  to={"/Asmaulhusna"}
                   className={({ isActive, isPending }) =>
-                    isPending ? 'pending' : isActive ? 'active' : ''
+                    isPending ? "pending" : isActive ? "active" : ""
                   }
                 >
                   Asmaul Husna
@@ -94,7 +99,10 @@ const NavbarComponent = () => {
               </div>
             </Nav>
             <div className="text-center fs-3">
-              <a className="text-black" href="https://www.youtube.com/@madzchannel3399">
+              <a
+                className="text-black"
+                href="https://www.youtube.com/@madzchannel3399"
+              >
                 <i className="bi bi-youtube"></i>
               </a>
             </div>

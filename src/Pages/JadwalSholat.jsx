@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
-
-import React, { useEffect, useState } from "react";
+import { useState, useRef } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { InputGroup, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 import FooterComponent from "../Components/FooterComponent";
 import { Loader } from "../Components/loader";
 import { useDocumentTitle } from "../hooks/use-document-title";
@@ -14,6 +15,19 @@ const JadwalSholat = () => {
 
   const [search, setSearch] = useState("");
   const [value] = useDebounce(search, 400);
+
+  // Shortcut
+  const inputRef = useRef(null);
+  useHotkeys(
+    "ctrl+k",
+    () => {
+      inputRef.current?.focus();
+    },
+    {
+      preventDefault: true,
+    }
+  );
+  // End Shorcut
 
   const { data: cities, isLoading } = useQuery({
     queryKey: ["cities"],
@@ -38,6 +52,7 @@ const JadwalSholat = () => {
             <div className="col">
               <InputGroup className="form-control p-0">
                 <Form.Control
+                  ref={inputRef}
                   id="form"
                   className="search mb-0 p-3 border-1 border-black"
                   placeholder="🔎  cari kota "
@@ -48,8 +63,8 @@ const JadwalSholat = () => {
                   id="basic-addon2"
                 >
                   <span>
-                    <kbd className="kbd-keys">CTRL</kbd> +{" "}
-                    <kbd className="kbd-keys">M</kbd>{" "}
+                    <kbd className="kbd-keys">CTRL</kbd> +
+                    <kbd className="kbd-keys">K</kbd>
                   </span>
                 </InputGroup.Text>
               </InputGroup>
