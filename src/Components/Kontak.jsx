@@ -1,75 +1,57 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Form, Button, Spinner, Toast, ToastContainer } from 'react-bootstrap';
-import Swal from 'sweetalert2'
-import ListKomentar from './ListKomentar';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
+import Swal from "sweetalert2";
+import { Form, Button, Spinner } from "react-bootstrap";
+
+import ListKomentar from "./ListKomentar";
+import { axiosInstance } from "../libs/axios";
 
 const Kontak = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const form = {
-    nama: '',
-    email: '',
-    pesan: ''
-  }
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
 
-  const [formData, setFormData] = useState(form);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const { isPending, mutate } = useMutation({
+    mutationFn: async (data) => {
+      return axiosInstance.post(
+        `${import.meta.env.VITE_API_BASE_URL}/comments`,
+        data
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
 
-  const PostData = async () => {
-
-    await axios.post(import.meta.env.VITE_PROD_KONTAK_URL, formData);
-    setIsLoading(false);
-
-  }
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    try {
-      await PostData();
-      setFormData(form)
-      setSubmitSuccess(true);
-      setTimeout(() => {
-        setSubmitSuccess(false); // Set submitSuccess kembali menjadi false setelah beberapa waktu
-      }, 2000);
-
-      // Menampilkan SweetAlert setelah pengiriman selesai
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil Mengirim Pesan',
-        text: 'Terimakasih komentarnya',
+      setData({
+        name: "",
+        email: "",
+        message: "",
       });
-    } catch (error) {
-      console.error(error);
 
-      // Menampilkan SweetAlert jika terjadi kesalahan
-      if (error.response && error.response.status === 404) {
-        // Kesalahan endpoint tidak ditemukan
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil Mengirim Pesan",
+        text: "Terimakasih komentarnya",
+      });
+    },
+    onError: (error) => {
+      console.log(error.response.data.code);
+      if (error.response.data.code == 500) {
         Swal.fire({
-          icon: 'error',
-          title: 'Internal Server Error',
-          text: 'Internal Server Error',
-        });
-      } else {
-        // Kesalahan umum lainnya
-        Swal.fire({
-          icon: 'error',
-          title: 'Terjadi kesalahan',
-          text: 'Maaf, terjadi kesalahan saat mengirim data.',
+          icon: "error",
+          title: "Internal Server Error",
+          text: "Internal Server Error",
         });
       }
-    } finally {
-      setIsLoading(false);
-    }
+    },
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    mutate(data);
   };
 
   return (
@@ -80,32 +62,74 @@ const Kontak = () => {
         </div>
         <div className="row">
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicNama">
+            <Form.Group
+              className="mb-3"
+              controlId="formBasicNama"
+            >
               <Form.Label>Nama</Form.Label>
-              <Form.Control type="text" name="nama" value={formData.nama} onChange={handleChange} required placeholder="Masukkan Nama" />
+              <Form.Control
+                type="text"
+                name="nama"
+                value={data.name}
+                onChange={(e) => setData({ ...data, name: e.target.value })}
+                required
+                placeholder="Masukkan Nama"
+              />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group
+              className="mb-3"
+              controlId="formBasicEmail"
+            >
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Email" />
+              <Form.Control
+                type="email"
+                name="email"
+                value={data.email}
+                onChange={(e) => setData({ ...data, email: e.target.value })}
+                required
+                placeholder="Email"
+              />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPesan">
+            <Form.Group
+              className="mb-3"
+              controlId="formBasicPesan"
+            >
               <Form.Label>Pesan</Form.Label>
-              <Form.Control type="text" as="textarea" name="pesan" value={formData.pesan} onChange={handleChange} required placeholder="Pesan" />
+              <Form.Control
+                type="text"
+                as="textarea"
+                name="pesan"
+                className="h-100"
+                value={data.message}
+                onChange={(e) => setData({ ...data, message: e.target.value })}
+                required
+                placeholder="Pesan"
+              />
             </Form.Group>
 
-            <Button type="submit" className="btn btn-info w-100 mb-5">
-              {isLoading ? <Spinner animation="border" size="sm" /> : "Kirim Pesan"}
+            <Button
+              type="submit"
+              className="btn btn-info w-100 mb-5"
+            >
+              {isPending ? (
+                <Spinner
+                  animation="border"
+                  size="sm"
+                />
+              ) : (
+                "Kirim Pesan"
+              )}
             </Button>
           </Form>
         </div>
         <div className="row">
-          <ListKomentar submitSuccess={submitSuccess}/>
+          <ListKomentar />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Kontak;
