@@ -93,7 +93,7 @@ const Kontak = () => {
             </Form.Group>
 
             <Form.Group
-              className="mb-3"
+              className="mb-4"
               controlId="formBasicPesan"
             >
               <Form.Label>Pesan</Form.Label>
@@ -101,7 +101,7 @@ const Kontak = () => {
                 type="text"
                 as="textarea"
                 name="pesan"
-                className="h-100"
+                className="text-area"
                 value={data.message}
                 onChange={(e) => setData({ ...data, message: e.target.value })}
                 required
@@ -110,6 +110,7 @@ const Kontak = () => {
             </Form.Group>
 
             <Button
+              disabled={isPending}
               type="submit"
               className="btn btn-info w-100 mb-5"
             >
