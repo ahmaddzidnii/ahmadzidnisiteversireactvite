@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 import avatar from "../assets/img/avatar.png";

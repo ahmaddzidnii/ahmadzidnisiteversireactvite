@@ -235,15 +235,19 @@ header {
 }
 
 .transisi {
-  transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  -webkit-transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  -moz-transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  -ms-transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  -o-transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 .transisi:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  -moz-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.001);
+  -webkit-transform: scale(1.001);
+  -moz-transform: scale(1.001);
+  -ms-transform: scale(1.001);
+  -o-transform: scale(1.001);
 }
 
 .card-shadow:hover {
@@ -271,7 +275,6 @@ header {
 
 /* Footer */
 .footer {
-  min-height: 50vh;
   background-color: var(--primary-color);
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -381,4 +384,8 @@ position: relative;
 .kbd-keys:active {
   background-color: #222;
   transform: translateY(1px);
+}
+
+.sidebar {
+  width: 300px;
 }
